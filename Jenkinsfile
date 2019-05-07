@@ -14,20 +14,31 @@ pipeline {
             parallel {
                 stage('A') {
                     steps {
-                        container('maven') {
-                            sh 'echo start A=$A'
-                            sleep 2
-                            sh 'echo end A=$A'
+                        timeout(15) {
+                            container('maven') {
+                                sh 'echo start A=$A'
+                                sleep 2
+                                sh 'echo end A=$A'
+                            }
                         }
                     }
                 }
                 stage('B') {
                     steps {
-                        container('maven') {
-                            sh 'echo start B=$B'
-                            sleep 1
-                            sh 'echo end B=$B'
+                        timeout(15) {
+                            container('maven') {
+                                sh 'echo start B=$B'
+                                sleep 1
+                                sh 'echo end B=$B'
+                            }
                         }
+                    }
+                }
+            }
+            steps {
+                timeout(15) {
+                    container('maven') {
+                        sh 'echo After A B'
                     }
                 }
             }
