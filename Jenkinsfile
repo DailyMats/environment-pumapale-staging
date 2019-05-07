@@ -11,14 +11,22 @@ pipeline {
     stages {
         stage('Validate Environment') {
             steps {
-                container('maven') {
-                    dir('env') {
-                        sh 'echo Validate'
-                        //sh 'jx step helm build'
+                parallel {
+                    container('maven') {
+                        sh 'echo A'
+                    }
+                    container('maven') {
+                        sh 'echo B'
+                        /*
+                        dir('env') {
+                            sh 'jx step helm build'
+                        }
+                         */
                     }
                 }
             }
         }
+        /*
         stage('Update Environment') {
             when {
                 branch 'master'
@@ -26,11 +34,11 @@ pipeline {
             steps {
                 container('maven') {
                     dir('env') {
-                        sh 'echo Update'
-                        //sh 'jx step helm apply'
+                        sh 'jx step helm apply'
                     }
                 }
             }
         }
+         */
     }
 }
