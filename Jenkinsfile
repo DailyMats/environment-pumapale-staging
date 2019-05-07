@@ -1,4 +1,7 @@
 pipeline {
+    agent {
+        label "jenkins-go"
+    }
     stages {
         stage('Pre-stage') {
             agent {
