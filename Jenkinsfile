@@ -1,7 +1,4 @@
 pipeline {
-    options {
-        disableConcurrentBuilds()
-    }
     agent {
         label "jenkins-maven"
     }
@@ -10,35 +7,26 @@ pipeline {
     }
     stages {
         stage('Validate Environment') {
-            steps {
-                parallel {
-                    container('maven') {
-                        sh 'echo A'
-                    }
-                    container('maven') {
-                        sh 'echo B'
-                        /*
-                        dir('env') {
-                            sh 'jx step helm build'
+            environment {
+                A = "a"
+                B = "b"
+            }
+            parallel {
+                stage('A') {
+                    steps {
+                        container('maven') {
+                            sh 'echo A=$A'
                         }
-                         */
+                    }
+                }
+                stage('B') {
+                    steps {
+                        container('maven') {
+                            sh 'echo B=$B'
+                        }
                     }
                 }
             }
         }
-        /*
-        stage('Update Environment') {
-            when {
-                branch 'master'
-            }
-            steps {
-                container('maven') {
-                    dir('env') {
-                        sh 'jx step helm apply'
-                    }
-                }
-            }
-        }
-         */
     }
 }
