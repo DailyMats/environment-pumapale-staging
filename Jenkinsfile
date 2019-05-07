@@ -6,39 +6,45 @@ pipeline {
         DEPLOY_NAMESPACE = "jx-staging"
     }
     stages {
-        stage('Validate Environment') {
+        stage('Top stage') {
             environment {
                 A = "a"
                 B = "b"
             }
-            parallel {
-                stage('A') {
-                    steps {
-                        timeout(15) {
-                            container('maven') {
-                                sh 'echo start A=$A'
-                                sleep 2
-                                sh 'echo end A=$A'
+            stages {
+                stage('Second-level stage 1') {
+                    parallel {
+                        stage('A') {
+                            steps {
+                                timeout(15) {
+                                    container('maven') {
+                                        sh 'echo start A=$A'
+                                        sleep 2
+                                        sh 'echo end A=$A'
+                                    }
+                                }
+                            }
+                        }
+                        stage('B') {
+                            steps {
+                                timeout(15) {
+                                    container('maven') {
+                                        sh 'echo start B=$B'
+                                        sleep 1
+                                        sh 'echo end B=$B'
+                                    }
+                                }
                             }
                         }
                     }
                 }
-                stage('B') {
+                stage('Second-level stage 1') {
                     steps {
                         timeout(15) {
                             container('maven') {
-                                sh 'echo start B=$B'
-                                sleep 1
-                                sh 'echo end B=$B'
+                                sh 'echo After A B'
                             }
                         }
-                    }
-                }
-            }
-            steps {
-                timeout(15) {
-                    container('maven') {
-                        sh 'echo After A B'
                     }
                 }
             }
