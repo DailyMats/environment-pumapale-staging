@@ -38,7 +38,7 @@ pipeline {
                         }
                     }
                 }
-                stage('Second-level stage 1') {
+                stage('Second-level stage 2') {
                     steps {
                         timeout(15) {
                             container('maven') {
