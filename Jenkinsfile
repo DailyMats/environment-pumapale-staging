@@ -1,34 +1,36 @@
 pipeline {
-  options {
-    disableConcurrentBuilds()
-  }
-  agent {
-    label "jenkins-maven"
-  }
-  environment {
-    DEPLOY_NAMESPACE = "jx-staging"
-  }
-  stages {
-    stage('Validate Environment') {
-      steps {
-        container('maven') {
-          dir('env') {
-            sh 'jx step helm build'
-          }
-        }
-      }
+    options {
+        disableConcurrentBuilds()
     }
-    stage('Update Environment') {
-      when {
-        branch 'master'
-      }
-      steps {
-        container('maven') {
-          dir('env') {
-            sh 'jx step helm apply'
-          }
-        }
-      }
+    agent {
+        label "jenkins-maven"
     }
-  }
+    environment {
+        DEPLOY_NAMESPACE = "jx-staging"
+    }
+    stages {
+        stage('Validate Environment') {
+            steps {
+                container('maven') {
+                    dir('env') {
+                        sh 'echo Validate'
+                        //sh 'jx step helm build'
+                    }
+                }
+            }
+        }
+        stage('Update Environment') {
+            when {
+                branch 'master'
+            }
+            steps {
+                container('maven') {
+                    dir('env') {
+                        sh 'echo Update'
+                        //sh 'jx step helm apply'
+                    }
+                }
+            }
+        }
+    }
 }
