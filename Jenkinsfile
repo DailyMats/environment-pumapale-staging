@@ -1,8 +1,15 @@
 pipeline {
     stages {
         stage('Pre-stage') {
-            stage('Top agent stage 1') {
-                sh 'uname'
+            agent {
+                label "jenkins-maven"
+            }
+            stages {
+                stage('Top agent stage 1') {
+                    steps {
+                        sh 'uname'
+                    }
+                }
             }
         }
         stage('Top stage') {
