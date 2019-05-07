@@ -15,14 +15,18 @@ pipeline {
                 stage('A') {
                     steps {
                         container('maven') {
-                            sh 'echo A=$A'
+                            sh 'echo start A=$A'
+                            sleep 2
+                            sh 'echo end A=$A'
                         }
                     }
                 }
                 stage('B') {
                     steps {
                         container('maven') {
-                            sh 'echo B=$B'
+                            sh 'echo start B=$B'
+                            sleep 1
+                            sh 'echo end B=$B'
                         }
                     }
                 }
