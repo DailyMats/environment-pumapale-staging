@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label "jenkins-maven"
+        label functionCall()
     }
     environment {
         DEPLOY_NAMESPACE = "jx-staging"
@@ -50,4 +50,9 @@ pipeline {
             }
         }
     }
+}
+
+def functionCall() {
+    System.out.println("Hello?");
+    return "jenkins-maven"
 }
