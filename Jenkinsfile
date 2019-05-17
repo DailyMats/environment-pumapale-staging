@@ -1,15 +1,18 @@
 pipeline {
     agent {
-        label "jenkins-maven"
-    }
-    environment {
-        DEPLOY_NAMESPACE = "jx-staging"
+        label "jenkins-jx-base"
     }
     stages {
-        stage('Top stage') {
+        stage('Trigger other builds') {
+            when {
+                not {
+                    branch '*__sanitizer-*'
+                }
+            }
             steps {
                 container('jx-base') {
-                    sh 'jx get pipelines'
+                    sh 'git checkout -b ${BRANCH_NAME}-${BUILD_NUMBER}__sanitizer-basic'
+                    sh 'git push origin ${BRANCH_NAME}-${BUILD_NUMBER}__sanitizer-basic'
                 }
             }
         }
